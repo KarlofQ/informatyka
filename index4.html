@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularz rejestracyjny</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items at the top */
+            min-height: 100vh; /* Use min-height instead of height */
+            margin: 0;
+            padding: 20px; /* Add padding to prevent content from touching the edges */
+            box-sizing: border-box;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        fieldset {
+            border: none;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #e9ecef; /* Slightly darker background */
+            border-radius: 8px;
+        }
+        legend {
+            font-weight: bold;
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        input, select, textarea {
+            width: 100%;
+            margin-top: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        textarea {
+            resize: none;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons input {
+            width: 48%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .buttons input[type="reset"] {
+            background-color: #f44336;
+        }
+        .buttons input:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .char-counter {
+            text-align: right;
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+        .note {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleSubmitButton() {
+            const checkbox = document.querySelector('input[name="zgoda"]');
+            const submitButton = document.querySelector('input[type="submit"]');
+            const languageSelect = document.querySelector('select[name="languages"]');
+            const selectedLanguages = Array.from(languageSelect.selectedOptions).length;
+            submitButton.disabled = !checkbox.checked || selectedLanguages < 2;
+        }
+
+        function updateCharCounter() {
+            const textarea = document.querySelector('textarea');
+            const counter = document.querySelector('.char-counter');
+            counter.textContent = `${textarea.value.length}/50 znaków`;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            toggleSubmitButton(); // Initialize the submit button state
+            document.querySelector('input[name="zgoda"]').addEventListener('change', toggleSubmitButton);
+            document.querySelector('select[name="languages"]').addEventListener('change', toggleSubmitButton);
+            const textarea = document.querySelector('textarea');
+            textarea.addEventListener('input', updateCharCounter);
+            updateCharCounter(); // Initialize the character counter
+        });
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Formularz rejestracyjny</h2>
+
+    <form>
+        <fieldset>
+            <legend>Podaj dane osobowe <span style="color: red;">*</span></legend>
+            <label class="required-label">Podaj swoje imię: <input type="text" name="imie" required></label>
+            <label class="required-label">Podaj swoje nazwisko: <input type="text" name="nazwisko" required></label>
+            <label class="required-label">Wybierz płeć: </label>
+            <label><input type="radio" name="plec" value="kobieta" required> Kobieta</label>
+            <label><input type="radio" name="plec" value="mezczyzna" required> Mężczyzna</label>
+            <label class="required-label">Podaj wiek: <input type="number" name="wiek" required></label>
+            <label class="required-label">Podaj adres e-mail: <input type="email" name="email" required></label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Wykształcenie <span style="color: red;">*</span></legend>
+            <label><input type="radio" name="wyksztalcenie" value="podstawowe" required> Podstawowe</label>
+            <label><input type="radio" name="wyksztalcenie" value="srednie" required> Średnie</label>
+            <label><input type="radio" name="wyksztalcenie" value="wyzsze" required> Wyższe</label>
+            <label class="required-label">Wybierz dwa języki: </label>
+            <select multiple name="languages" required>
+                <optgroup label="Jezyk glowny">
+                    <option value="Jezyk angielski">Jezyk angielski</option>
+                    <option value="Jezyk niemiecki">Jezyk niemiecki</option>
+                    <option value="Jezyk francuski">Jezyk francuski</option>
+                </optgroup>
+                <optgroup label="Jezyk dodatkowy">
+                    <option value="Jezyk wloski">Jezyk wloski</option>
+                    <option value="Jezyk japonski">Jezyk japonski</option>
+                    <option value="Jezyk chinski">Jezyk chinski</option>
+                </optgroup>
+            </select>
+        </fieldset>
+
+        <fieldset>
+            <legend>Zainteresowania i uwagi</legend>
+            <label><input type="checkbox" name="zainteresowania" value="motoryzacja"> Motoryzacja</label>
+            <label><input type="checkbox" name="zainteresowania" value="sport"> Sport</label>
+            <label><input type="checkbox" name="zainteresowania" value="muzyka"> Muzyka</label>
+            <label><input type="checkbox" name="zainteresowania" value="taniec"> Taniec</label>
+            <label><input type="checkbox" name="zainteresowania" value="gry"> Gry komputerowe</label>
+            <label>Inne: <input type="text" name="inne"></label>
+            <label>Uwagi (max 50 znaków): <textarea maxlength="50"></textarea></label>
+            <div class="char-counter">0/50 znaków</div>
+        </fieldset>
+
+        <label class="required-label"><input type="checkbox" name="zgoda" required> Zgadzam się na przetwarzanie moich danych osobowych <span style="color: red;">*</span></label><br><br>
+        <div class="buttons">
+            <input type="submit" value="Wyślij" disabled>
+            <input type="reset" value="Wyczyść">
+        </div>
+    </form>
+    <div class="note">* Pola oznaczone gwiazdką są wymagane</div>
+</div>
+
+</body>
+</html>
